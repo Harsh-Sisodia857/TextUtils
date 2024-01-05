@@ -1,24 +1,44 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Navbar from './component/Navbar';
+import TextForm from './component/TextForm';
+import { ToastContainer,toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import About from './component/About';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+
 
 function App() {
+  const [mode, setMode] = useState("light");
+
+  const handleMode = () => {
+    if (mode === "light") {
+      setMode("dark");
+      document.body.style.backgroundColor = "grey";
+      toast("Dark Mode Applied",{autoClose: 2000});
+    }
+    else {
+      setMode("light");
+      document.body.style.backgroundColor = "white";
+      toast("Light Mode Applied",{autoClose: 2000});
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+      <Navbar mode={mode} onhandleMode={handleMode} />
+      <ToastContainer />
+      
+        <Routes>
+          <Route path="/" element={<TextForm mode={mode} />}></Route>
+          <Route path="/about" element={<About />}></Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
